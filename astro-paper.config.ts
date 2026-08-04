@@ -2,14 +2,10 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://astro-paper.pages.dev/",
+    url: "https://www.nuwank.me",
     title: "Nuwan Karunarathna",
-    description: "A minimal, responsive and SEO-friendly Astro blog theme.",
-    author: "Sat Naing",
-    profile: "https://satna.ing",
-    ogImage: "default-og.jpg",
-    lang: "en",
-    timezone: "Asia/Bangkok",
+    description: "Personal blog of Nuwan Karunarathna, a software engineer and tech enthusiast.",
+    author: "Nuwan Karunarathna",
     dir: "ltr",
   },
   posts: {
@@ -23,16 +19,15 @@ export default defineAstroPaperConfig({
     showArchives: true,
     showBackButton: true,
     editPost: {
-      enabled: true,
-      url: "https://github.com/satnaing/astro-paper/edit/main/",
+      enabled: false,
     },
     search: "pagefind",
   },
   socials: [
-    { name: "github",   url: "https://github.com/satnaing/astro-paper" },
-    { name: "x",        url: "https://x.com/username" },
-    { name: "linkedin", url: "https://www.linkedin.com/in/username/" },
-    { name: "mail",     url: "mailto:yourmail@gmail.com" },
+    { name: "github",   url: "https://github.com/nuwannnz" },
+    // { name: "x",        url: "https://x.com/username" },
+    { name: "linkedin", url: "https://www.linkedin.com/in/nuwan-nk" },
+    { name: "mail",     url: "nuwankarunarathna504@gmail.com" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
