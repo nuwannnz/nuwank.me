@@ -79,7 +79,7 @@ Rules:
 | Side gutter    | `max(16px, safe-area inset, 4vw)` |
 
 - `.grid` creates the two columns. `.margin` puts content in column 1 and `.main` in column 2.
-- Everything is left-aligned to the column edge. The only right-aligned items are dates in post rows and the "Next post" link.
+- Everything is left-aligned to the column edge, with three exceptions: dates in post rows and the "Next post" link are right-aligned, and images in posts are centred in the column with their captions centred beneath them.
 - Sections are separated by `.section`: `2.25rem` padding with a top hairline. Year groups, topics and pagination all use it.
 
 ### Breakpoints
@@ -107,7 +107,7 @@ Nothing scrolls sideways at any width. Code blocks and tables scroll inside thei
 | Page head    | `.page-head`, `PageHead.tsx`     | Optional back link (arrow-left + label) in the margin; title at `--s3`; italic serif summary.                                                                                                                                                                 |
 | Post details | `.meta`                          | Definition list in the margin: Published, Updated, Reading time, Topics, First published on (for posts with a canonical URL).                                                                                                                                 |
 | Contents     | `.toc`, `PostToc.tsx`            | "On this page" list of h2/h3, sticky in the margin. The current section gets a pine left border. Hidden under 760px and when there are fewer than two headings.                                                                                               |
-| Prose        | `.prose`, `Prose.tsx`            | Article body: serif text, sans headings, pine links, images with a hairline border and 6px radius, captions from the image title, tables, callouts, code.                                                                                                     |
+| Prose        | `.prose`, `Prose.tsx`            | Article body: serif text, sans headings, pine links, centred images with a hairline border and 6px radius, centred captions from the image title, tables, callouts, code.                                                                                     |
 | Code block   | `.prose pre`, `.code-name`       | Shiki dual theme (`min-light` / `night-owl`) on `--well`. A `file="name"` meta adds a file name above. Highlighted lines use `--lichen`.                                                                                                                      |
 | Callout      | `.prose .callout`                | `> [!NOTE]` style: `--well` fill, 2px pine left edge (`#b4442e` for warning and caution).                                                                                                                                                                     |
 | Post footer  | `.post-foot`                     | Share links and "Back to top ↑" on one row; optional edit link; previous (← older) and next (newer →) posts.                                                                                                                                                  |

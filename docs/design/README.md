@@ -18,7 +18,7 @@ Several earlier directions were shown and set aside: a minimal indigo design, a 
 
 ## The idea
 
-Every page sits on one asymmetric grid. A narrow **left margin** holds time and context. On the home page that's years. On a post it's the date, reading time, topics and the contents list. A single **reading column** holds everything you read. Nothing is centred, and there are no cards.
+Every page sits on one asymmetric grid. A narrow **left margin** holds time and context. On the home page that's years. On a post it's the date, reading time, topics and the contents list. A single **reading column** holds everything you read. Apart from images in posts, nothing is centred, and there are no cards.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐

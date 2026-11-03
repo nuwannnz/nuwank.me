@@ -693,6 +693,16 @@ mark {
   font: 400 var(--s-1) / 1.45 var(--sans);
   color: var(--quiet);
 }
+/* Images and their captions sit centred in the reading column (code figures stay left-aligned) */
+.prose figure:not(.code) img {
+  margin-inline: auto;
+}
+.prose figure:not(.code) figcaption {
+  text-align: center;
+  text-wrap: balance;
+  max-width: 32rem;
+  margin-inline: auto;
+}
 .prose table {
   display: block;
   overflow-x: auto;
