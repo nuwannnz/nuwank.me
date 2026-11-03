@@ -70,13 +70,13 @@ Rules:
 | page gutter | --margin | --gap | --column (≤ 40rem) | room |
 ```
 
-| Token          | Value                             |
-| -------------- | --------------------------------- |
-| `--margin`     | 9.5rem (7.5rem under 1000px)      |
-| `--column`     | 40rem                             |
-| `--gap`        | clamp(1.5rem, 4vw, 3.5rem)        |
-| Page max width | margin + gap + column + 6rem      |
-| Side gutter    | `max(16px, safe-area inset, 4vw)` |
+| Token          | Value                                           |
+| -------------- | ----------------------------------------------- |
+| `--margin`     | 9.5rem (7.5rem under 1000px, 11rem from 1440px) |
+| `--column`     | 40rem                                           |
+| `--gap`        | clamp(1.5rem, 4vw, 3.5rem)                      |
+| Page max width | margin + gap + column + 6rem                    |
+| Side gutter    | `max(16px, safe-area inset, 4vw)`               |
 
 - `.grid` creates the two columns. `.margin` puts content in column 1 and `.main` in column 2.
 - Everything is left-aligned to the column edge, with three exceptions: dates in post rows and the "Next post" link are right-aligned, and images in posts are centred in the column with their captions centred beneath them.
@@ -86,6 +86,7 @@ Rules:
 
 | Width    | Change                                                                                                                                                              |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ≥ 1440px | Root size grows fluidly from 16px to 18px (at 2560px), scaling the whole grid and type scale; margin widens to 11rem                                                |
 | ≤ 1000px | Margin narrows to 7.5rem                                                                                                                                            |
 | ≤ 760px  | Single column: margin content moves above the column; post details become a two-up grid; contents list hides; dates move above titles; body text drops to 1.0625rem |
 | ≤ 480px  | Header nav spreads across one full-width line                                                                                                                       |

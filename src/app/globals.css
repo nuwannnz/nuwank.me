@@ -883,6 +883,22 @@ mark {
 }
 
 /* ---------- Responsive ---------- */
+/*
+ * Wide: everything is sized in rem, so growing the root size scales the whole
+ * grid and type scale together (16px at 1440px up to 18px at 2560px). The
+ * column stays at the same measure in characters; it just reads at a
+ * comfortable size from further away. The margin gets a little more room
+ * for topics and contents.
+ */
+@media (min-width: 1440px) {
+  html {
+    font-size: clamp(100%, 0.8393rem + 0.1786vw, 112.5%);
+  }
+  :root {
+    --margin: 11rem;
+  }
+}
+
 /* Medium: a slimmer margin so the reading column keeps its width */
 @media (max-width: 1000px) {
   :root {
