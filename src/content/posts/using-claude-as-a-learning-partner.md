@@ -11,8 +11,6 @@ author: Nuwan Karunarathna
 draft: false
 ---
 
-### Using Claude as a Learning Partner
-
 Learning and adapting have always been crucial parts of software engineering. With AI tools, learning can become much easier and more interesting, too.
 
 I thought I’d brush up on my Docker skills to refresh my memory, since I hadn’t run Docker commands manually recently (thanks to agents :P). So I wondered how I could use Claude as a learning partner. I wanted a consistent, ongoing learning experience and not just a one-off “teach me Docker” session.
