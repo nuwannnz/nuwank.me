@@ -20,7 +20,7 @@ Move one requested article from the user's Obsidian vault into the nuwank.me blo
 - Posts: `src/content/posts/<slug>.md` (use `.mdx` only if the post truly needs MDX). Public URL: `/posts/<slug>/`.
 - Images: `public/images/<slug>/<file>`, referenced in the post as `/images/<slug>/<file>`.
 - Frontmatter: `title` (required), `description` (required), `pubDatetime` (required, ISO date), optional `modDatetime`, `slug`, `tags` (list), `author` (default `Nuwan Karunarathna`), `draft`, `featured`, `ogImage`, `canonicalURL`, `hideEditPost`, `timezone`. For a requested ready-to-add post include an explicit stable `slug`, tags, `author: Nuwan Karunarathna`, and `draft: false`.
-- Rendering features you can rely on: GitHub-flavoured Markdown (tables, task lists, footnotes), GitHub-style callouts (`> [!NOTE] Optional title`), Shiki code blocks (a `file="name.ts"` meta after the language adds a filename label; `// [!code highlight]`, `// [!code ++]`, `// [!code --]` annotate lines), and a `## Table of contents` heading that is filled in automatically.
+- Rendering features you can rely on: GitHub-flavoured Markdown (tables, task lists, footnotes), GitHub-style callouts (`> [!NOTE] Optional title`), Shiki code blocks (a `file="name.ts"` meta after the language adds a filename label; `// [!code highlight]`, `// [!code ++]`, `// [!code --]` annotate lines), a `## Table of contents` heading that is filled in automatically, and image captions: the Markdown image title becomes a caption under the image (`![alt](/images/<slug>/x.png "Caption")`, or `title="Caption"` on an `<img>`).
 - The site renders the title itself, so the post body must not start with a duplicate `# Title`.
 
 ## Workflow
@@ -42,12 +42,17 @@ Move one requested article from the user's Obsidian vault into the nuwank.me blo
 5. **Run it for real** with the same arguments plus the answers, without `--dry-run`. It refuses (non-zero exit, clear message) to overwrite an existing post, a post that already uses the slug, or an existing image with different content. If that happens, do not delete or replace anything; pick another slug or ask the user.
 6. **Finish what the script left for you** (all listed in its summary):
    - `unresolvedEmbeds`: these are left in the post as `![[...]]`. Find the image (ask the user if it is not in the vault) and copy it into `public/images/<slug>/` with a kebab-case name, or ask the user how to handle note/PDF embeds. No vault-specific syntax may remain.
-   - `altFromFilename`: the alt text was derived from a file name such as `Pasted image 2024...`. Replace it with a short description of what the image shows.
+   - **Every image gets alt text and a caption.** Open each image file and look at it before writing either; don't guess from the file name or the surrounding text.
+     - Alt text says what the image shows, for someone who can't see it. Be specific: name the screen, the key labels and the state ("Scheduled tasks page listing an active Daily Docker task that runs daily at about 8:00 AM"), not "screenshot" or "the routine".
+     - The caption says what the reader should take from it, in one short sentence ending with a full stop ("The daily routine in the Scheduled tab."). Base it on the article's own words. It must not repeat the alt text.
+     - Write them as `![Alt text](/images/<slug>/file.png "Caption.")`. For a sized `<img>`, add `title="Caption."`. Inside a caption, use typographic quotes (“ ” ’) instead of `"`.
+     - `captionsNeeded` lists the images that still have no caption, and `altFromFilename` lists alt text the script derived from a file name (such as `Pasted image 2024...`). Fix every image in both lists. Also rewrite any alt text that doesn't match what the image actually shows.
+     - Alt text and captions are the one place where you add words. Show them to the user in your report so they can change them.
    - `flattenedWikilinks`: links to vault notes became plain text because those notes are not on the site. If the target is already a published post, you may link to `/posts/<slug>/`; otherwise leave the text.
    - `warnings`: for example a callout type outside `NOTE`, `TIP`, `IMPORTANT`, `WARNING`, `CAUTION`. Check it renders; if not, switch to the closest of those five.
    - Light formatting only: add missing code-block languages, fix heading levels if the article skipped one. Do not reword prose.
-7. **Verify.** In the checkout run `pnpm build` (production check) or `pnpm dev` and open `http://localhost:3000/posts/<slug>/`. If the repo's `package.json` defines different scripts, use those. Confirm the post builds, images load, callouts and code blocks render.
-8. **Report** the post path, the image files added, any input you assumed or still need, and remind the user nothing was committed.
+7. **Verify.** In the checkout run `pnpm build` (production check) or `pnpm dev` and open `http://localhost:3000/posts/<slug>/`. If the repo's `package.json` defines different scripts, use those. Confirm the post builds, images load with their captions, and callouts and code blocks render.
+8. **Report** the post path, the image files added with the alt text and caption you wrote for each, any input you assumed or still need, and remind the user nothing was committed.
 
 ## What the script converts
 
@@ -55,7 +60,8 @@ So you can check its work, or do it by hand if Node is unavailable:
 
 - Obsidian frontmatter is parsed and merged: `title`, `slug`, `description` (or `summary`/`excerpt`), `tags` (`#` prefix and nested `parent/` prefix removed), `pubDatetime`/`publishDate`/`published`, and schema fields such as `canonicalURL` are kept; Obsidian-only keys (`aliases`, `created`, `cssclasses`, ...) are dropped and listed in `warnings`.
 - Title: frontmatter `title`, else the first `# H1` (which is removed from the body), else the folder name.
-- `![[img.png]]` becomes `![alt](/images/<slug>/img.png)`; `![[img.png|Alt text]]` keeps the alt text; `![[img.png|300]]` or `|300x200` becomes `<img src="..." alt="..." width="300" height="200" />`. Relative Markdown images `![alt](attachments/img.png)` are handled the same way.
+- `![[img.png]]` becomes `![alt](/images/<slug>/img.png)`; `![[img.png|Alt text]]` keeps the alt text; `![[img.png|300]]` or `|300x200` becomes `<img src="..." alt="..." width="300" height="200" />`. Relative Markdown images `![alt](attachments/img.png "Caption")` are handled the same way and keep their title.
+- Captions: an image followed directly by a whole-line italic caption (`*Caption*` or `_Caption_`, the usual Obsidian convention) has that line folded into the image title, so it renders as the caption.
 - Images are looked up as written, then in the article folder, then anywhere in the vault, preferring an `attachments`/`assets`/`images`-style folder when several files share the name. Only images the article uses are copied, renamed to safe kebab-case (`Pasted image 1.PNG` becomes `pasted-image-1.png`). An identical file already in place is reused.
 - `[[Note]]`, `[[Note|label]]`, `[[Note#Heading]]` become plain text (the label, or the note name).
 - `==highlight==` becomes `<mark>highlight</mark>`; `%%comments%%` (inline or multi-line) are removed; block IDs like ` ^abc123` are removed.

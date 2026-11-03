@@ -51,7 +51,7 @@ Markdown supports:
 - GitHub-flavoured Markdown (tables, task lists, footnotes)
 - callouts written as `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]` or `[!CAUTION]`
 - a `## Table of contents` heading, which is filled in automatically and collapsed
-- image captions from the image title: `![alt](/images/x.png "Caption")`
+- image captions from the image title: `![alt](/images/x.png "Caption")`. Give every image both: alt text that describes what it shows, and a short caption that says why it’s there.
 - Shiki code blocks: ` ```ts file="app.ts" ` adds a file name, and `// [!code highlight]`, `// [!code ++]` and `// [!code --]` mark lines
 
 To publish an article from Obsidian, ask your coding agent to use the `publish-obsidian-articles` skill (see [AGENTS.md](AGENTS.md)).

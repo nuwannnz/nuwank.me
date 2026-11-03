@@ -181,19 +181,30 @@ function embed(original, inner) {
   if (!width) return `![${alt}](${src})`;
   return `<img src="${src}" alt="${escAttr(alt)}" width="${width}"${height ? ` height="${height}"` : ""} />`;
 }
-function mdImage(original, alt, src) {
+function mdImage(original, alt, src, caption) {
   let file = src;
   try { file = decodeURIComponent(src); } catch { /* keep as written */ }
   if (!IMAGE_EXT.has(path.extname(file).toLowerCase())) return original;
   const url = useAsset(file, original);
-  return url ? `![${alt || defaultAlt(file, original)}](${url})` : original;
+  if (!url) return original;
+  return `![${alt || defaultAlt(file, original)}](${url}${caption ? ` "${caption}"` : ""})`;
+}
+// The site shows an image's Markdown title as its caption. In Obsidian a caption is
+// usually an italic line right under the image; fold that line into the title.
+const captionText = (s) => s.trim().replace(/"/g, "\\\"");
+function foldCaptions(t) {
+  return t
+    .replace(/^([ \t]*!\[[^\]\n]*\]\([^)\s"]+)\)[ \t]*\n[ \t]*([*_])(?!\2)([^\n]+?)\2[ \t]*$/gm,
+      (_, img, __, cap) => `${img} "${captionText(cap)}")`)
+    .replace(/^([ \t]*<img\b(?![^>]*\btitle=)[^>]*?)[ \t]*\/?>[ \t]*\n[ \t]*([*_])(?!\2)([^\n]+?)\2[ \t]*$/gm,
+      (_, img, __, cap) => `${img} title="${escAttr(cap.trim())}" />`);
 }
 
 // Pass 2: Obsidian syntax -> Markdown the site renders.
 const calloutTypes = new Set();
 let body = mapProse(raw, (t) => t
   .replace(/!\[\[([^\]]+)\]\]/g, (m, inner) => embed(m, inner))
-  .replace(/!\[([^\]]*)\]\((?!https?:|data:|\/|#)(?:<([^>]+)>|([^)\s]+))(?:\s+"[^"]*")?\)/g, (m, alt, a, b) => mdImage(m, alt, a ?? b))
+  .replace(/!\[([^\]]*)\]\((?!https?:|data:|\/|#)(?:<([^>]+)>|([^)\s]+))(?:\s+"([^"]*)")?\)/g, (m, alt, a, b, cap) => mdImage(m, alt, a ?? b, cap))
   .replace(/(?<!!)\[\[([^\]]+)\]\]/g, (m, inner) => {
     const [target, label] = inner.split(/\\?\|/).map((s) => s.trim());
     const text = label || (target.startsWith("#") ? target.slice(1).replace(/^\^/, "") : path.basename(target.split("#")[0], ".md"));
@@ -205,10 +216,18 @@ let body = mapProse(raw, (t) => t
     calloutTypes.add(type.toLowerCase());
     return `${q}[!${type.toUpperCase()}]${fold}`;
   })
+  .replace(/^.*$/s, foldCaptions) // whole chunk: needs the image conversions above
   .replace(/[ \t]+\^[A-Za-z0-9-]+[ \t]*$/gm, "") // block ids: "text ^abc123"
   .replace(/^\^[A-Za-z0-9-]+[ \t]*$/gm, "")
   .replace(/\n{3,}/g, "\n\n").replace(/^\n{2,}/, "\n").replace(/\n{2,}$/, "\n"));
 body = body.replace(/^\s*\n/, "").trimEnd() + "\n";
+// Images on this post that still need a caption (alt text says what it shows; the caption says why it's there).
+const captionsNeeded = [];
+mapProse(body, (t) => {
+  for (const m of t.matchAll(/!\[([^\]\n]*)\]\((\/images\/[^)\s]+)\)/g)) captionsNeeded.push({ src: m[2], alt: m[1] });
+  for (const m of t.matchAll(/<img\b(?![^>]*\btitle=)[^>]*\bsrc="(\/images\/[^"]+)"[^>]*>/g)) captionsNeeded.push({ src: m[1] });
+  return t;
+});
 for (const t of calloutTypes) if (!GITHUB_CALLOUTS.has(t)) warnings.push(`callout type "${t}" is not one of the GitHub five (${[...GITHUB_CALLOUTS].join(", ")}); check it renders`);
 
 // ---------- frontmatter out ----------
@@ -279,5 +298,5 @@ console.log(JSON.stringify({
   dryRun, source, post: postPath, url: `/posts/${slug}/`, title, slug,
   frontmatter: Object.fromEntries(Object.entries(fm).filter(([, v]) => v != null)),
   assets: plan.map((a) => ({ from: a.from, to: a.to, status: verb[a.status] })),
-  unresolvedEmbeds, flattenedWikilinks, altFromFilename, needsInput, hints, warnings,
+  unresolvedEmbeds, flattenedWikilinks, altFromFilename, captionsNeeded, needsInput, hints, warnings,
 }, null, 2));
