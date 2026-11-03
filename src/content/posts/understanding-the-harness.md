@@ -122,7 +122,7 @@ The model provides the reasoning.
 
 The harness provides the execution.
 
-![Harness](@/assets/images/harness.png)
+![Harness](/images/understanding-the-harness/harness.png)
 
 ---
 

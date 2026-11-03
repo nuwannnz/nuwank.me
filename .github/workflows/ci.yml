@@ -16,7 +16,7 @@ jobs:
   build:
     name: Code standards & build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
 
     steps:
       - name: "☁️ Checkout repository"
@@ -38,6 +38,9 @@ jobs:
 
       - name: "🔎 Lint code"
         run: pnpm run lint
+
+      - name: "🧾 Type check"
+        run: pnpm run typecheck
 
       - name: "📝 Checking code format"
         run: pnpm run format:check

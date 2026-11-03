@@ -1,17 +1,11 @@
-# Ignore everything
-/*
-
-# Except these files & folders
-!/src
-!/public
-!/.github
-!tsconfig.json
-!astro.config.ts
-!package.json
-!.prettierrc
-!eslint.config.js
-!README.md
-!.vscode
-
-# Ignore MDX files
-*.mdx
+node_modules/
+.next/
+out/
+public/pagefind/
+pnpm-lock.yaml
+next-env.d.ts
+docs/design/mockup.html
+# Article content is authored elsewhere; keep it as written
+src/content/
+.agents/
+.claude/
