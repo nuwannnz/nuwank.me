@@ -4,6 +4,7 @@ import {
   Hanken_Grotesk,
   Source_Serif_4,
 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { siteConfig } from "@/site.config";
 import { getSearchRecords } from "@/lib/posts";
 import { SearchBand, SearchProvider } from "@/components/Search";
@@ -90,6 +91,7 @@ export default function RootLayout({
           </SearchProvider>
           <SiteFooter />
         </div>
+        <Analytics />
       </body>
     </html>
   );
