@@ -23,7 +23,7 @@ First, I created a folder on my local drive (for example, `docker-learning`).
 
 Then, in Claude Desktop, I went to the Code tab and created a new chat. From the “Choose environment” menu, I selected the folder I’d created. It opened as a new workspace.
 
-![Claude Code workspace opened for the Docker learning project](/images/using-claude-as-a-learning-partner/workspace.png)
+![Claude Desktop’s Choose environment menu with This computer selected, and options for Cloud and New environment](/images/using-claude-as-a-learning-partner/workspace.png "Choosing the learning folder from the Choose environment menu opens it as a workspace.")
 
 After that, I created the agent by sending this prompt:
 
@@ -31,20 +31,20 @@ After that, I created the agent by sending this prompt:
 
 With this prompt, Claude set up the `CLAUDE.md` file with instructions and created an agent in the `.claude/agents` directory inside the `docker-learning` folder. It also created a `Progress.md` file to track my learning progress and a routine to run the agent every day around 8:00 a.m.
 
-![Progress file tracking the learning plan](/images/using-claude-as-a-learning-partner/progress-file.png)
+![Workspace file tree showing .claude/agents/docker-coach.md, a tasks folder, CLAUDE.md and PROGRESS.md](/images/using-claude-as-a-learning-partner/progress-file.png "The files Claude set up: the agent, its instructions in CLAUDE.md, and PROGRESS.md to track what I’ve covered.")
 
 You can find the routine in the Scheduled tab in Claude Desktop.
 
-![The routine in Claude Desktop Scheduled tab](/images/using-claude-as-a-learning-partner/scheduled-tab.png)
+![Scheduled tasks page in Claude Desktop listing an active Daily Docker task that runs daily at about 8:00 AM](/images/using-claude-as-a-learning-partner/scheduled-tab.png "The daily routine in the Scheduled tab.")
 
 In my case, Claude created the agent file `docker-coach.md` (it might have a different name for you). I can invoke this agent with `@docker-coach.md`
 
-![The docker-coach agent file](/images/using-claude-as-a-learning-partner/agent-file.png)
+![Prompt box with @docker- typed and docker-coach.md from .claude/agents suggested below it](/images/using-claude-as-a-learning-partner/agent-file.png "Typing @ in the prompt box suggests the agent, so you can call it directly.")
 
 
 Here’s a task the agent created for me. It also included a set of questions and verification scripts.
 
-![A daily task prepared by the agent](/images/using-claude-as-a-learning-partner/daily-task.png)
+![TASK.md for Day 1 on images vs containers, docker run, ports and environment variables, with Theory and Hands-on sections; the file tree shows SOLUTION.md and verify.sh beside it](/images/using-claude-as-a-learning-partner/daily-task.png "A day’s task: a short theory section and hands-on exercises, with a solution and a verification script alongside.")
 
 We can fine-tune any of these to our liking by asking Claude to update the agent. For example: `Update the agent to include reference links for each theory.`
 
